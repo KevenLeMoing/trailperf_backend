@@ -1,0 +1,28 @@
+# docker-compose.yml
+
+version: "3"
+services:
+
+  server:
+    container_name: flask
+    build: .
+    ports: ['5000:5000']
+    volumes: ['.:/usr/src/app']
+    restart: always
+    environment:
+      ENV: DEVELOPMENT
+      DB_USERNAME: username
+      DB_PASSWORD: password
+      DB_DATABASE: database_name
+      DB_HOST: localhost
+    links:
+      - database
+
+  database:
+    container_name: database
+    image: mongo:4.0.4
+    restart: always
+    environment:
+      MONGO_DBNAME: trailperf
+    volumes:
+      - ./data/db:/data/db
